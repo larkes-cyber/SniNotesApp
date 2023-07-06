@@ -15,7 +15,8 @@ private val DarkColorPalette = Colors(
     primaryTitleColor = Color(0xFF1D1B20),
     primaryBackground =  Color(0xFFF6EDFF),
     primarySubtitleColor = Color(0xFF49454F),
-    secondPrimaryTitleColor = Color.White
+    secondPrimaryTitleColor = Color.White,
+    secondPrimaryBackground = Color(0xFFECE6F0)
 )
 
 private val LightColorPalette = Colors(
@@ -23,11 +24,13 @@ private val LightColorPalette = Colors(
     primaryTitleColor = Color(0xFF1D1B20),
     primaryBackground =  Color(0xFFF6EDFF),
     primarySubtitleColor = Color(0xFF49454F),
-    secondPrimaryTitleColor = Color.White
+    secondPrimaryTitleColor = Color.White,
+    secondPrimaryBackground = Color(0xFFECE6F0)
 )
 
 data class Colors(
     val primaryBackground:Color,
+    val secondPrimaryBackground:Color,
     val primaryTitleColor:Color,
     val primarySubtitleColor:Color,
     val primary:Color,

@@ -10,7 +10,7 @@ import com.example.sninotesapp.presentation.navigation.Screen
 fun SplashScreen(navController: NavController) {
 
     LaunchedEffect(Unit){
-        navController.navigate(Screen.LoginScreen.route)
+        navController.navigate(Screen.NotesScreen.route)
     }
     Text(text = "splash")
 

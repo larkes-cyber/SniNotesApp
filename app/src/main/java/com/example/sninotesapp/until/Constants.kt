@@ -8,5 +8,6 @@ object Constants {
     const val SignInTitle = "Sign in now"
     const val SignUpSubtitle = "Please fill the details and create account"
     const val SignInSubtitle = "Please sign in to continue our app"
+    const val AppName = "SniNotes"
 
 }

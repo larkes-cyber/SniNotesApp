@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sninotesapp.presentation.screen.login.LoginScreen
 import com.example.sninotesapp.presentation.screen.login.LoginScreenViewModel
+import com.example.sninotesapp.presentation.screen.notes.NotesScreen
 import com.example.sninotesapp.presentation.screen.splash.SplashScreen
 
 @Composable
@@ -20,7 +21,9 @@ fun Navigation(navController: NavHostController) {
             SplashScreen(navController = navController)
         }
         composable(Screen.NotesScreen.route){
-
+            NotesScreen(
+                navController = navController
+            )
         }
         composable(Screen.LoginScreen.route){
             val viewModel:LoginScreenViewModel = hiltViewModel()
