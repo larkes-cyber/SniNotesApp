@@ -21,14 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sninotesapp.presentation.theme.AppTheme
 import com.example.sninotesapp.presentation.views.PasswordInputView
 import com.example.sninotesapp.presentation.views.TextFieldButton
-import com.example.sninotesapp.presentation.views.TextInputView
+import com.example.sninotesapp.presentation.views.LoginInputView
 import com.example.sninotesapp.until.Constants.RegistrationMode
 import com.example.sninotesapp.until.Constants.SignInSubtitle
 import com.example.sninotesapp.until.Constants.SignInTitle
@@ -67,7 +66,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.spacedBy(0.dp)
         ) {
             if(uiState.mode == RegistrationMode) {
-                TextInputView(
+                LoginInputView(
                     text = uiState.nameTextFieldValue,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -77,7 +76,7 @@ fun LoginScreen(
                         viewModel.onNameTextFieldChange(it)
                     })
             }
-            TextInputView(
+            LoginInputView(
                 text = uiState.emailTextFieldValue,
                 hint = "Enter your email",
                 modifier = Modifier

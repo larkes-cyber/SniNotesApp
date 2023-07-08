@@ -1,28 +1,33 @@
 package com.example.sninotesapp.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.sninotesapp.presentation.screen.login.LoginScreen
 import com.example.sninotesapp.presentation.screen.login.LoginScreenViewModel
+import com.example.sninotesapp.presentation.screen.note_detail.NoteDetailScreen
+import com.example.sninotesapp.presentation.screen.note_detail.NoteDetailViewModel
 import com.example.sninotesapp.presentation.screen.notes.NotesScreen
+import com.example.sninotesapp.presentation.screen.notes.NotesViewModel
 import com.example.sninotesapp.presentation.screen.splash.SplashScreen
 
 @Composable
 fun Navigation(navController: NavHostController) {
 
 
-    NavHost(navController = navController, startDestination = Screen.SplashScreen.route){
+    NavHost(navController = navController, startDestination = Screen.NotesScreen.route){
 
         composable(Screen.SplashScreen.route){
             SplashScreen(navController = navController)
         }
         composable(Screen.NotesScreen.route){
+            val viewModel:NotesViewModel = hiltViewModel()
             NotesScreen(
-                navController = navController
+                navController = navController,
+                viewModel = viewModel
             )
         }
         composable(Screen.LoginScreen.route){
@@ -32,8 +37,22 @@ fun Navigation(navController: NavHostController) {
                 viewModel = viewModel
             )
         }
-        composable(Screen.NoteDetailScreen.route){
-
+        composable(
+            route = Screen.NoteDetailScreen.route + "/{id}",
+            arguments = listOf(
+                navArgument("id"){
+                    NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ){entry ->
+            val viewModel:NoteDetailViewModel = hiltViewModel()
+            val id = entry.arguments?.getString("id")
+            NoteDetailScreen(
+                viewModel = viewModel,
+                id = id,
+                navController = navController
+            )
         }
 
     }

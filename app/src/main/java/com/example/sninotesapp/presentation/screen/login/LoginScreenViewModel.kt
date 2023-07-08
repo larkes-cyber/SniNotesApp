@@ -14,6 +14,8 @@ class LoginScreenViewModel @Inject constructor():ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState:StateFlow<LoginUiState> = _uiState
 
+
+
     fun onEmailTextFieldChange(text:String){
         _uiState.value = uiState.value.copy(emailTextFieldValue = text)
     }

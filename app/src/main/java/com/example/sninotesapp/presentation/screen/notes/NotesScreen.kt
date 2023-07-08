@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -26,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,15 +37,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.sninotesapp.R
+import com.example.sninotesapp.presentation.navigation.Screen
 import com.example.sninotesapp.presentation.theme.AppTheme
 import com.example.sninotesapp.presentation.views.TaskItemView
 import com.example.sninotesapp.until.Constants.AppName
 
 @Composable
 fun NotesScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: NotesViewModel
 ) {
-    
+
+    val state by viewModel.uiState.collectAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
         backgroundColor = AppTheme.colors.primaryBackground,
@@ -94,7 +101,9 @@ fun NotesScreen(
         },
         floatingActionButton = {
             Button(
-                onClick = { },
+                onClick = {
+                   navController.navigate(Screen.NoteDetailScreen.withArgs("null"))
+                },
                 modifier = Modifier.size(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 elevation = ButtonDefaults.elevation(3.dp),
@@ -122,17 +131,16 @@ fun NotesScreen(
             item {
                 Spacer(modifier = Modifier.height(45.dp))
             }
-            items(0){
+            items(state.notesList, {it.id!!}){note ->
                 TaskItemView(
-                    title = "List item",
-                    text = "Supporting line text lorem ipsum dolor sit amet, consectetur.",
+                    title = note.title,
+                    text = note.text,
                     color = Color(0xFFFEF7FF),
-                    selected = true,
+                    selected = false,
                     onLongClick = {
-                        Log.d("sdfdsfdf","###")
                     }
                 ){
-                    Log.d("sdfdsfdf","###########################")
+                    navController.navigate(Screen.NoteDetailScreen.withArgs(note.id.toString()))
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
