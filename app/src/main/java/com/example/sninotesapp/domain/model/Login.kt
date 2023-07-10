@@ -1,0 +1,7 @@
+package com.example.sninotesapp.domain.model
+
+data class Login(
+    val login:String,
+    val password:String,
+    val name:String = ""
+)

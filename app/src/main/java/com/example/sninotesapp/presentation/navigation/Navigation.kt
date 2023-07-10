@@ -13,15 +13,20 @@ import com.example.sninotesapp.presentation.screen.note_detail.NoteDetailViewMod
 import com.example.sninotesapp.presentation.screen.notes.NotesScreen
 import com.example.sninotesapp.presentation.screen.notes.NotesViewModel
 import com.example.sninotesapp.presentation.screen.splash.SplashScreen
+import com.example.sninotesapp.presentation.screen.splash.SplashScreenViewModel
 
 @Composable
 fun Navigation(navController: NavHostController) {
 
 
-    NavHost(navController = navController, startDestination = Screen.NotesScreen.route){
+    NavHost(navController = navController, startDestination = Screen.SplashScreen.route){
 
         composable(Screen.SplashScreen.route){
-            SplashScreen(navController = navController)
+            val viewModel:SplashScreenViewModel = hiltViewModel()
+            SplashScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
         }
         composable(Screen.NotesScreen.route){
             val viewModel:NotesViewModel = hiltViewModel()

@@ -93,7 +93,7 @@ fun LoginScreen(
             NotesPrimaryButton(text  = if(uiState.mode == RegistrationMode) "Sign Up" else "Sign In", modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)) {
-
+                    viewModel.onSubmit()
             }
         }
         Spacer(modifier = Modifier.height(35.dp))

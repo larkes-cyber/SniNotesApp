@@ -1,11 +1,11 @@
-package com.example.sninotesapp.data.source
+package com.example.sninotesapp.data.database.source
 
 import com.example.sninotesapp.data.database.dao.NoteDao
 import com.example.sninotesapp.data.database.entity.NoteEntity
 
 class NoteDatabaseDataSourceImpl(
     private val noteDao: NoteDao
-):NoteDatabaseDataSource {
+): NoteDatabaseDataSource {
     override suspend fun insertNote(noteEntity: NoteEntity) = noteDao.insertNote(noteEntity)
     override suspend fun observeNotes(): List<NoteEntity> = noteDao.observeNotes()
     override suspend fun observeNoteById(id: Int): NoteEntity = noteDao.observeNoteById(id)

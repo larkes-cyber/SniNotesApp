@@ -1,6 +1,7 @@
-package com.example.sninotesapp.domain.model
+package com.example.sninotesapp.domain.mapper
 
 import com.example.sninotesapp.data.database.entity.NoteEntity
+import com.example.sninotesapp.domain.model.Note
 
 fun Note.toNoteEntity():NoteEntity{
     return NoteEntity(
@@ -12,7 +13,7 @@ fun Note.toNoteEntity():NoteEntity{
     )
 }
 
-fun NoteEntity.toNote():Note{
+fun NoteEntity.toNote(): Note {
     return Note(
         id = id,
         title = title,

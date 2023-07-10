@@ -1,4 +1,4 @@
-package com.example.sninotesapp.data.source
+package com.example.sninotesapp.data.database.source
 
 import com.example.sninotesapp.data.database.entity.NoteEntity
 
