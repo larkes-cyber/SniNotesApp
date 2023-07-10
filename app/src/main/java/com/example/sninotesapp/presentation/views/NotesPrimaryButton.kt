@@ -11,9 +11,10 @@ import androidx.compose.ui.unit.dp
 import com.example.sninotesapp.presentation.theme.AppTheme
 
 @Composable
-fun TextFieldButton(
+fun NotesPrimaryButton(
     modifier:Modifier = Modifier,
     text:String = "",
+    shape:Int = 11,
     onClick:() -> Unit
 ) {
 
@@ -24,7 +25,7 @@ fun TextFieldButton(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(backgroundColor = AppTheme.colors.primary),
         elevation = ButtonDefaults.elevation(0.dp),
-        shape = RoundedCornerShape(11.dp)
+        shape = RoundedCornerShape(shape.dp)
     ) {
         Text(
             text = text,

@@ -16,7 +16,9 @@ private val DarkColorPalette = Colors(
     primaryBackground =  Color(0xFFF6EDFF),
     primarySubtitleColor = Color(0xFF49454F),
     secondPrimaryTitleColor = Color.White,
-    secondPrimaryBackground = Color(0xFFECE6F0)
+    secondPrimaryBackground = Color(0xFFECE6F0),
+    offline_color = Color(0xFF8C1D18),
+    online_color = Color(0xFF39CCA0)
 )
 
 private val LightColorPalette = Colors(
@@ -25,7 +27,9 @@ private val LightColorPalette = Colors(
     primaryBackground =  Color(0xFFF6EDFF),
     primarySubtitleColor = Color(0xFF49454F),
     secondPrimaryTitleColor = Color.White,
-    secondPrimaryBackground = Color(0xFFECE6F0)
+    secondPrimaryBackground = Color(0xFFECE6F0),
+    offline_color = Color(0xFF8C1D18),
+    online_color = Color(0xFF39CCA0)
 )
 
 data class Colors(
@@ -34,7 +38,9 @@ data class Colors(
     val primaryTitleColor:Color,
     val primarySubtitleColor:Color,
     val primary:Color,
-    val secondPrimaryTitleColor:Color
+    val secondPrimaryTitleColor:Color,
+    val offline_color:Color,
+    val online_color:Color
 )
 
 @Composable

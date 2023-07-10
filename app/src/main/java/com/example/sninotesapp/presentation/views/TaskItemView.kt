@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import com.example.sninotesapp.presentation.theme.AppTheme
+import com.example.sninotesapp.until.Constants.ONLINE
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -57,11 +58,16 @@ fun TaskItemView(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier.combinedClickable(
             onClick = {
-                fullTaskSizeMode.value = !fullTaskSizeMode.value
-                onClick()
+                if(selected) {
+                    onClick()
+                    return@combinedClickable
+                }
+                if(!fullTaskSizeMode.value) onClick()
+                else fullTaskSizeMode.value = !fullTaskSizeMode.value
             },
             onLongClick = {
                 onLongClick()
+                if(!selected) fullTaskSizeMode.value = !fullTaskSizeMode.value
             }
         )
     ) {
@@ -86,22 +92,40 @@ fun TaskItemView(
                     style = MaterialTheme.typography.h6.copy(color = AppTheme.colors.primaryTitleColor)
                 )
 
-                Row() {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
                     if(fullTaskSizeMode.value) {
                         Text(
                             text = text,
-                            style = MaterialTheme.typography.subtitle1.copy(color = AppTheme.colors.primarySubtitleColor)
+                            style = MaterialTheme.typography.subtitle1.copy(color = AppTheme.colors.primarySubtitleColor),
+                            modifier = Modifier.fillMaxWidth(0.99f)
                         )
                     }
                     else{
                         Text(
                             text = if(text.length > 35) text.substring(0, 33) + ".." else text,
-                            style = MaterialTheme.typography.subtitle1.copy(color = AppTheme.colors.primarySubtitleColor)
+                            style = MaterialTheme.typography.subtitle1.copy(color = AppTheme.colors.primarySubtitleColor),
+                            modifier = Modifier.fillMaxWidth(0.98f)
                         )
                     }
+                    if(!selected) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(2f)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(4.dp)
+                                    .clip(RoundedCornerShape(100))
+                                    .background(AppTheme.colors.offline_color)
+                            ) {
+
+                            }
+                        }
+                    }
                 }
-
-
             }
             if(selected) {
                 Box(

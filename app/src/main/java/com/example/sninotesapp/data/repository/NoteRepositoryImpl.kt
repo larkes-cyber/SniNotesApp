@@ -10,11 +10,8 @@ import com.example.sninotesapp.domain.repository.NoteRepository
 class NoteRepositoryImpl(
     private val noteDatabaseDataSource: NoteDatabaseDataSource
 ):NoteRepository {
-    override suspend fun insertNote(noteEntity: Note) {
-        noteDatabaseDataSource.insertNote(noteEntity.toNoteEntity())
-    }
-
+    override suspend fun insertNote(noteEntity: Note) = noteDatabaseDataSource.insertNote(noteEntity.toNoteEntity())
     override suspend fun observeNotes(): List<Note> = noteDatabaseDataSource.observeNotes().map { it.toNote() }
-
     override suspend fun observeNoteById(id: Int): Note = noteDatabaseDataSource.observeNoteById(id).toNote()
+    override suspend fun deleteNote(noteEntity: Note)= noteDatabaseDataSource.deleteNote(noteEntity.toNoteEntity())
 }

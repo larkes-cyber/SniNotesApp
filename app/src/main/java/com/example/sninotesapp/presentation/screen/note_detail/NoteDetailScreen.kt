@@ -39,7 +39,7 @@ fun NoteDetailScreen(
    }
 
     Scaffold(
-        backgroundColor = Color(0xFFEFB8C8),
+        backgroundColor = Color(uiState.color),
         topBar = {
            Row(
                horizontalArrangement = Arrangement.SpaceBetween,

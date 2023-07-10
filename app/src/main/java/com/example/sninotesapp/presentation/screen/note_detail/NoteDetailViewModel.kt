@@ -27,12 +27,14 @@ class NoteDetailViewModel @Inject constructor(
                 val note = noteRepository.observeNoteById(savedStateHandle.get<String>("id")!!.toInt())
                 _uiState.value = NoteDetailUiState(
                     title = note.title,
-                    text = note.text
+                    text = note.text,
+                    color = note.color
                 )
             }else{
                 _uiState.value = NoteDetailUiState(
                     title = "Title",
-                    text = "Write your note here..."
+                    text = "Write your note here...",
+                    color = Note.generateRandom()
                 )
             }
         }
@@ -53,7 +55,7 @@ class NoteDetailViewModel @Inject constructor(
                     id = if(savedStateHandle.get<String>("id") == "null") null else savedStateHandle.get<String>("id")!!.toInt(),
                     title = _uiState.value.title,
                     text = _uiState.value.text,
-                    color = 22323,
+                    color = _uiState.value.color,
                     online_sync = false
                 )
             )

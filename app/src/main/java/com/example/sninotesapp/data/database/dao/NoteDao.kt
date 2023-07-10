@@ -1,6 +1,7 @@
 package com.example.sninotesapp.data.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,5 +19,8 @@ interface NoteDao {
 
     @Query("SELECT * FROM NoteEntity WHERE id = :id")
     suspend fun observeNoteById(id:Int):NoteEntity
+
+    @Delete
+    suspend fun deleteNote(noteEntity: NoteEntity)
 
 }

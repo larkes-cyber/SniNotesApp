@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.sninotesapp.presentation.theme.AppTheme
 import com.example.sninotesapp.presentation.views.PasswordInputView
-import com.example.sninotesapp.presentation.views.TextFieldButton
+import com.example.sninotesapp.presentation.views.NotesPrimaryButton
 import com.example.sninotesapp.presentation.views.LoginInputView
 import com.example.sninotesapp.until.Constants.RegistrationMode
 import com.example.sninotesapp.until.Constants.SignInSubtitle
@@ -90,7 +90,7 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.height(30.dp))
         Box(Modifier.padding(horizontal = 26.dp)) {
-            TextFieldButton(text  = if(uiState.mode == RegistrationMode) "Sign Up" else "Sign In", modifier = Modifier
+            NotesPrimaryButton(text  = if(uiState.mode == RegistrationMode) "Sign Up" else "Sign In", modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)) {
 
