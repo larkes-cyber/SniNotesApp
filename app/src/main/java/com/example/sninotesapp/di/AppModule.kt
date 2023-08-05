@@ -10,6 +10,7 @@ import com.example.sninotesapp.data.database.source.NoteDatabaseDataSource
 import com.example.sninotesapp.data.database.source.NoteDatabaseDataSourceImpl
 import com.example.sninotesapp.data.database.source.UserSharedPreferenceDataSource
 import com.example.sninotesapp.data.database.source.UserSharedPreferenceDataSourceImpl
+import com.example.sninotesapp.data.remote.api.UserApi
 import com.example.sninotesapp.data.remote.source.UserRemoteDataSource
 import com.example.sninotesapp.data.remote.source.UserRemoteDataSourceImpl
 import com.example.sninotesapp.domain.repository.NoteRepository
@@ -24,6 +25,8 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.Logging
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 import javax.inject.Singleton
 
@@ -46,6 +49,15 @@ object AppModule {
         }
     }
 
+    @Provides
+    @Singleton
+    fun provideRetrofitClient():Retrofit = Retrofit.Builder()
+        .baseUrl("http://192.168.0.100:8080")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    @Provides
+    fun provideUserApi(retrofit: Retrofit):UserApi = retrofit.create(UserApi::class.java)
 
     @Singleton
     @Provides
@@ -77,7 +89,7 @@ object AppModule {
     fun provideUserSharedPreferenceDataSource(context: Context): UserSharedPreferenceDataSource = UserSharedPreferenceDataSourceImpl(context = context)
 
     @Provides
-    fun provideUserRemoteDataSource(client: HttpClient): UserRemoteDataSource = UserRemoteDataSourceImpl(client = client)
+    fun provideUserRemoteDataSource(client: HttpClient, userApi: UserApi): UserRemoteDataSource = UserRemoteDataSourceImpl(client = client, userApi)
 
     @Provides
     fun provideUserRepository(
