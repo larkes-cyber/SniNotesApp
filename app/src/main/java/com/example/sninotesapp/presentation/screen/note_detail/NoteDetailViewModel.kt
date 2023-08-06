@@ -52,7 +52,7 @@ class NoteDetailViewModel @Inject constructor(
         viewModelScope.launch {
             noteRepository.insertNote(
                 Note(
-                    id = if(savedStateHandle.get<String>("id") == "null") null else savedStateHandle.get<String>("id")!!.toInt(),
+                    id = if(savedStateHandle.get<String>("id") == "null") null else savedStateHandle.get<String>("id")!!,
                     title = _uiState.value.title,
                     text = _uiState.value.text,
                     color = _uiState.value.color,

@@ -11,6 +11,8 @@ import com.example.sninotesapp.data.database.source.NoteDatabaseDataSourceImpl
 import com.example.sninotesapp.data.database.source.UserSharedPreferenceDataSource
 import com.example.sninotesapp.data.database.source.UserSharedPreferenceDataSourceImpl
 import com.example.sninotesapp.data.remote.api.UserApi
+import com.example.sninotesapp.data.remote.source.NoteRemoteDataSource
+import com.example.sninotesapp.data.remote.source.NoteRemoteDataSourceImpl
 import com.example.sninotesapp.data.remote.source.UserRemoteDataSource
 import com.example.sninotesapp.data.remote.source.UserRemoteDataSourceImpl
 import com.example.sninotesapp.domain.repository.NoteRepository
@@ -74,8 +76,16 @@ object AppModule {
     ): NoteDatabaseDataSource = NoteDatabaseDataSourceImpl(noteDao = noteDao)
 
     @Provides
-    fun provideNoteRepository(noteDatabaseDataSource: NoteDatabaseDataSource):NoteRepository{
-        return NoteRepositoryImpl(noteDatabaseDataSource = noteDatabaseDataSource)
+    fun provideNoteRepository(
+        noteDatabaseDataSource: NoteDatabaseDataSource,
+        noteRemoteDataSource: NoteRemoteDataSource,
+        userSharedPreferenceDataSource: UserSharedPreferenceDataSource
+    ):NoteRepository{
+        return NoteRepositoryImpl(
+            noteDatabaseDataSource = noteDatabaseDataSource,
+            noteRemoteDataSource = noteRemoteDataSource,
+            userSharedPreferenceDataSource = userSharedPreferenceDataSource
+        )
     }
 
     @Provides
@@ -84,6 +94,8 @@ object AppModule {
     @Provides
     fun provideUserRemoteDataSource(client: HttpClient): UserRemoteDataSource = UserRemoteDataSourceImpl(client = client)
 
+    @Provides
+    fun provideNoteRemoteDataSource(client: HttpClient): NoteRemoteDataSource = NoteRemoteDataSourceImpl(client = client)
     @Provides
     fun provideUserRepository(
         userSharedPreferenceDataSource: UserSharedPreferenceDataSource,

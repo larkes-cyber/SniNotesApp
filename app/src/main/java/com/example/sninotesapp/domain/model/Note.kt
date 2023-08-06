@@ -3,7 +3,7 @@ package com.example.sninotesapp.domain.model
 import androidx.compose.ui.graphics.Color
 
 data class Note(
-    val id:Int? = null,
+    val id:String? = null,
     val title:String,
     val text:String,
     val color:Long,
