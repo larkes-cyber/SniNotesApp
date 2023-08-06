@@ -6,5 +6,7 @@ data class LoginUiState(
   val mode:String = RegistrationMode,
   val emailTextFieldValue:String = "",
   val passwordTextFieldValue:String = "",
-  val nameTextFieldValue:String = ""
+  val nameTextFieldValue:String = "",
+  val hasBeenDone:Boolean = false,
+  val error:String = ""
 )

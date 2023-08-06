@@ -3,6 +3,7 @@ package com.example.sninotesapp.presentation.screen.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sninotesapp.domain.model.Login
+import com.example.sninotesapp.domain.model.User
 import com.example.sninotesapp.domain.repository.UserRepository
 import com.example.sninotesapp.until.Constants.AuthorizationMode
 import com.example.sninotesapp.until.Constants.RegistrationMode
@@ -22,6 +23,7 @@ class LoginScreenViewModel @Inject constructor(
 
 
 
+
     fun onEmailTextFieldChange(text:String){
         _uiState.value = uiState.value.copy(emailTextFieldValue = text)
     }
@@ -34,19 +36,45 @@ class LoginScreenViewModel @Inject constructor(
     }
     fun switchMode(){
         if(_uiState.value.mode == RegistrationMode){
-            _uiState.value = uiState.value.copy(mode = AuthorizationMode)
+            _uiState.value = uiState.value.copy(mode = AuthorizationMode, error = "")
         }else{
-            _uiState.value = uiState.value.copy(mode = RegistrationMode)
+            _uiState.value = uiState.value.copy(mode = RegistrationMode, error = "")
         }
     }
 
-    fun onSubmit(){
+    fun onRegSubmit(){
         viewModelScope.launch {
-            userRepository.registerUser(Login(
+            val user = userRepository.registerUser(
+                User(
                 login = uiState.value.emailTextFieldValue,
                 password = uiState.value.passwordTextFieldValue,
                 name = uiState.value.nameTextFieldValue
+              )
+            )
+            if(user.data != null){
+                userRepository.putUserData(user.data)
+                _uiState.value = uiState.value.copy(hasBeenDone = true)
+            }else{
+                _uiState.value = uiState.value.copy(error = user.message!!)
+            }
+        }
+    }
+    fun onAuthSubmit(){
+        viewModelScope.launch {
+            val session = userRepository.authUser(Login(
+                login = uiState.value.emailTextFieldValue,
+                password = uiState.value.passwordTextFieldValue
             ))
+            if (session.data != null){
+                val user = userRepository.observeUserData(
+                    session = session.data,
+                    email = uiState.value.emailTextFieldValue
+                )
+                 userRepository.putUserData(user.data!!)
+                _uiState.value = uiState.value.copy(hasBeenDone = true)
+            }else{
+                _uiState.value = uiState.value.copy(error = session.message!!)
+            }
         }
     }
 }

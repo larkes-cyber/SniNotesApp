@@ -5,6 +5,7 @@ import com.example.sninotesapp.data.remote.source.UserRemoteDataSource
 import com.example.sninotesapp.domain.model.Login
 import com.example.sninotesapp.domain.model.User
 import com.example.sninotesapp.domain.repository.UserRepository
+import com.example.sninotesapp.until.Resource
 import kotlin.math.log
 
 class UserRepositoryImpl(
@@ -14,6 +15,9 @@ class UserRepositoryImpl(
 
     override fun putUserData(user: User) = userSharedPreferenceDataSource.putUserData(user = user)
     override fun getUserData(): User? = userSharedPreferenceDataSource.getUserData()
-    override suspend fun registerUser(login: Login): User = userRemoteDataSource.registerUser(login)
+    override fun deleteUser() = userSharedPreferenceDataSource.deleteUser()
+    override suspend fun registerUser(user: User): Resource<User> = userRemoteDataSource.registerUser(user)
+    override suspend fun observeUserData(session: String, email: String): Resource<User> = userRemoteDataSource.observeUser(session = session, email = email)
+    override suspend fun authUser(login: Login): Resource<String> = userRemoteDataSource.authorizationUser(login)
 
 }

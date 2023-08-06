@@ -32,5 +32,12 @@ class UserSharedPreferenceDataSourceImpl(
         }
     }
 
+    override fun deleteUser() {
+        sharedPreferences.edit().remove("session").apply()
+        sharedPreferences.edit().remove("login").apply()
+        sharedPreferences.edit().remove("password").apply()
+        sharedPreferences.edit().remove("name").apply()
+    }
+
 
 }

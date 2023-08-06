@@ -6,5 +6,6 @@ interface UserSharedPreferenceDataSource {
 
     fun putUserData(user: User)
     fun getUserData():User?
+    fun deleteUser()
 
 }

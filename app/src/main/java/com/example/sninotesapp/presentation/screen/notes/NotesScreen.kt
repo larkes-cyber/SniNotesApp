@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,10 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,10 +49,17 @@ fun NotesScreen(
     viewModel: NotesViewModel
 ) {
 
-    val state by viewModel.uiState.collectAsState()
+    val notesUiState by viewModel.notesUiState.collectAsState()
+    val userUiState by viewModel.userUiState.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(userUiState.hasBeenQuit){
+        if(userUiState.hasBeenQuit){
+            navController.navigate(Screen.LoginScreen.route)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
@@ -97,7 +100,7 @@ fun NotesScreen(
                         fontSize = 22.sp
                     )
                 )
-                if(state.selectingMode) {
+                if(notesUiState.selectingMode) {
                     IconButton(
                         onClick = {
                             viewModel.deleteNotes()
@@ -128,16 +131,20 @@ fun NotesScreen(
                   verticalArrangement = Arrangement.spacedBy(30.dp),
                   horizontalAlignment = Alignment.CenterHorizontally
               ) {
-                  Text(
-                      text = "playegrovoy",
-                      style = MaterialTheme.typography.h5.copy(color = AppTheme.colors.primaryTitleColor)
-                  )
+                  if(userUiState.user != null) {
+                      Text(
+                          text = userUiState.user!!.name,
+                          style = MaterialTheme.typography.h5.copy(color = AppTheme.colors.primaryTitleColor)
+                      )
+                  }
                   NotesPrimaryButton(
                       text = "quit",
-                      modifier = Modifier.height(35.dp).width(85.dp),
+                      modifier = Modifier
+                          .height(35.dp)
+                          .width(85.dp),
                       shape = 7
                   ) {
-
+                    viewModel.quitApp()
                   }
               }
         },
@@ -173,21 +180,21 @@ fun NotesScreen(
             item {
                 Spacer(modifier = Modifier.height(45.dp))
             }
-            items(state.notesList, {it.id!!}){note ->
+            items(notesUiState.notesList, {it.id!!}){ note ->
                 TaskItemView(
                     title = note.title,
                     text = note.text,
                     color = Color(note.color),
-                    selected = note in state.selectedNotes,
+                    selected = note in notesUiState.selectedNotes,
                     onLongClick = {
-                        if(!state.selectingMode){
+                        if(!notesUiState.selectingMode){
                             viewModel.switchSelectingMode(true)
                             viewModel.selectNote(note)
                         }
                     }
                 ){
-                    if(state.selectingMode) {
-                        if(note !in state.selectedNotes) viewModel.selectNote(note)
+                    if(notesUiState.selectingMode) {
+                        if(note !in notesUiState.selectedNotes) viewModel.selectNote(note)
                         else viewModel.unselectNote(note)
                     }
                     else navController.navigate(Screen.NoteDetailScreen.withArgs(note.id.toString()))

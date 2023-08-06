@@ -50,13 +50,6 @@ object AppModule {
     }
 
     @Provides
-    @Singleton
-    fun provideRetrofitClient():Retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.0.100:8080")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    @Provides
     fun provideUserApi(retrofit: Retrofit):UserApi = retrofit.create(UserApi::class.java)
 
     @Singleton
@@ -89,7 +82,7 @@ object AppModule {
     fun provideUserSharedPreferenceDataSource(context: Context): UserSharedPreferenceDataSource = UserSharedPreferenceDataSourceImpl(context = context)
 
     @Provides
-    fun provideUserRemoteDataSource(client: HttpClient, userApi: UserApi): UserRemoteDataSource = UserRemoteDataSourceImpl(client = client, userApi)
+    fun provideUserRemoteDataSource(client: HttpClient): UserRemoteDataSource = UserRemoteDataSourceImpl(client = client)
 
     @Provides
     fun provideUserRepository(

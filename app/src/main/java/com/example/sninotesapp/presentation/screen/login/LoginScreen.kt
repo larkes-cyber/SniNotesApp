@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sninotesapp.presentation.navigation.Screen
 import com.example.sninotesapp.presentation.theme.AppTheme
 import com.example.sninotesapp.presentation.views.PasswordInputView
 import com.example.sninotesapp.presentation.views.NotesPrimaryButton
@@ -40,6 +42,12 @@ fun LoginScreen(
     viewModel: LoginScreenViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.hasBeenDone){
+        if(uiState.hasBeenDone){
+            navController.navigate(Screen.NotesScreen.route)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -87,13 +95,22 @@ fun LoginScreen(
             PasswordInputView(text = uiState.passwordTextFieldValue, modifier = Modifier.fillMaxWidth()){
                 viewModel.onPasswordTextFieldChange(it)
             }
+            if(uiState.error.isNotEmpty()){
+                Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                    Text(
+                        text = uiState.error,
+                        style = MaterialTheme.typography.caption.copy(color = AppTheme.colors.error_color)
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(30.dp))
         Box(Modifier.padding(horizontal = 26.dp)) {
             NotesPrimaryButton(text  = if(uiState.mode == RegistrationMode) "Sign Up" else "Sign In", modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)) {
-                    viewModel.onSubmit()
+                if(uiState.mode == RegistrationMode) viewModel.onRegSubmit()
+                else viewModel.onAuthSubmit()
             }
         }
         Spacer(modifier = Modifier.height(35.dp))
