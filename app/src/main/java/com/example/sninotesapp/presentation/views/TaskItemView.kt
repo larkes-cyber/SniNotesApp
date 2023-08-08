@@ -42,6 +42,7 @@ fun TaskItemView(
     text:String,
     color:Color,
     selected:Boolean,
+    online_sync:Boolean,
     onLongClick:() -> Unit,
     onClick:() -> Unit
 ) {
@@ -119,7 +120,7 @@ fun TaskItemView(
                                 modifier = Modifier
                                     .size(4.dp)
                                     .clip(RoundedCornerShape(100))
-                                    .background(AppTheme.colors.offline_color)
+                                    .background(if(online_sync) AppTheme.colors.online_color else AppTheme.colors.offline_color)
                             ) {
 
                             }

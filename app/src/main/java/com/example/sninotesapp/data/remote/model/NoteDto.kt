@@ -5,6 +5,5 @@ data class NoteDto(
     val title:String,
     val text:String,
     val id:String?,
-    val timestamp:Long = 1,
-    val session:String = ""
+    val color:Long = 1
 )

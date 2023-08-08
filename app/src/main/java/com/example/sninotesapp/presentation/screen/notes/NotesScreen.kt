@@ -180,12 +180,13 @@ fun NotesScreen(
             item {
                 Spacer(modifier = Modifier.height(45.dp))
             }
-            items(notesUiState.notesList, {it.id!!}){ note ->
+            items(notesUiState.notesList.filter { it.visible }, {it.id!!}){ note ->
                 TaskItemView(
                     title = note.title,
                     text = note.text,
                     color = Color(note.color),
                     selected = note in notesUiState.selectedNotes,
+                    online_sync = note.online_sync,
                     onLongClick = {
                         if(!notesUiState.selectingMode){
                             viewModel.switchSelectingMode(true)

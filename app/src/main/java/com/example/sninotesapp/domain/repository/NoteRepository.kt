@@ -7,8 +7,10 @@ import com.example.sninotesapp.until.Resource
 interface NoteRepository {
     suspend fun insertNote(noteEntity: Note)
     suspend fun observeNotes():List<Note>
-    suspend fun observeNoteById(id:Int): Note
+    suspend fun observeNoteById(id:String): Note
     suspend fun deleteNote(noteEntity: Note)
     suspend fun pushNote(note: Note):Resource<String>
+    suspend fun updateNote(note:Note):Resource<String>
+    suspend fun noteSyncWithServer(note: Note):Resource<String>
 
 }

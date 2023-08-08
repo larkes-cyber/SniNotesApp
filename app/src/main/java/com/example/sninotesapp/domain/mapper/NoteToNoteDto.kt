@@ -7,12 +7,12 @@ fun Note.toNoteDto() = NoteDto(
     title = title,
     id = id?.toString(),
     text = text,
-    timestamp = color
+    color = color
 )
 fun NoteDto.toNote() = Note(
     title = title,
     id = id,
     text = text,
-    color = timestamp,
+    color = color,
     online_sync = true
 )

@@ -11,5 +11,6 @@ class NoteEntity(
     val title:String,
     val text:String,
     val color:Long,
-    val online_sync:Boolean
+    val online_sync:Boolean,
+    val visible:Boolean
 )

@@ -24,11 +24,12 @@ class NoteDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             if(savedStateHandle.get<String>("id") != "null"){
-                val note = noteRepository.observeNoteById(savedStateHandle.get<String>("id")!!.toInt())
+                val note = noteRepository.observeNoteById(savedStateHandle.get<String>("id")!!)
                 _uiState.value = NoteDetailUiState(
                     title = note.title,
                     text = note.text,
-                    color = note.color
+                    color = note.color,
+                    online_sync = note.online_sync
                 )
             }else{
                 _uiState.value = NoteDetailUiState(
@@ -50,15 +51,21 @@ class NoteDetailViewModel @Inject constructor(
 
     fun databaseSync(){
         viewModelScope.launch {
-            noteRepository.insertNote(
-                Note(
-                    id = if(savedStateHandle.get<String>("id") == "null") null else savedStateHandle.get<String>("id")!!,
-                    title = _uiState.value.title,
-                    text = _uiState.value.text,
-                    color = _uiState.value.color,
-                    online_sync = false
-                )
+
+            val noteId = if(savedStateHandle.get<String>("id") == "null") null else savedStateHandle.get<String>("id")!!
+            val note = Note(
+                id = noteId,
+                title = _uiState.value.title,
+                text = _uiState.value.text,
+                color = _uiState.value.color,
+                online_sync = false
             )
+
+            val serverSyncRes = noteRepository.noteSyncWithServer(note)
+            note.online_sync = serverSyncRes.data != null
+            if(serverSyncRes.data != null && serverSyncRes.data != "Updated") note.id = serverSyncRes.data
+
+            noteRepository.insertNote(note)
             _uiState.value = uiState.value.copy(noteHasBeenEdited = true)
         }
     }

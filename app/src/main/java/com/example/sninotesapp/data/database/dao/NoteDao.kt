@@ -18,7 +18,7 @@ interface NoteDao {
     suspend fun observeNotes():List<NoteEntity>
 
     @Query("SELECT * FROM NoteEntity WHERE id = :id")
-    suspend fun observeNoteById(id:Int):NoteEntity
+    suspend fun observeNoteById(id:String):NoteEntity
 
     @Delete
     suspend fun deleteNote(noteEntity: NoteEntity)
