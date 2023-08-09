@@ -17,6 +17,7 @@ import com.example.sninotesapp.data.remote.source.UserRemoteDataSource
 import com.example.sninotesapp.data.remote.source.UserRemoteDataSourceImpl
 import com.example.sninotesapp.domain.repository.NoteRepository
 import com.example.sninotesapp.domain.repository.UserRepository
+import com.example.sninotesapp.until.InternetConnectionService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +28,7 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.Logging
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+
 
 import javax.inject.Singleton
 
@@ -52,7 +52,8 @@ object AppModule {
     }
 
     @Provides
-    fun provideUserApi(retrofit: Retrofit):UserApi = retrofit.create(UserApi::class.java)
+    fun provideInternetConnectionService(context: Context):InternetConnectionService = InternetConnectionService(context)
+
 
     @Singleton
     @Provides
@@ -79,12 +80,14 @@ object AppModule {
     fun provideNoteRepository(
         noteDatabaseDataSource: NoteDatabaseDataSource,
         noteRemoteDataSource: NoteRemoteDataSource,
-        userSharedPreferenceDataSource: UserSharedPreferenceDataSource
+        userSharedPreferenceDataSource: UserSharedPreferenceDataSource,
+        internetConnectionService: InternetConnectionService
     ):NoteRepository{
         return NoteRepositoryImpl(
             noteDatabaseDataSource = noteDatabaseDataSource,
             noteRemoteDataSource = noteRemoteDataSource,
-            userSharedPreferenceDataSource = userSharedPreferenceDataSource
+            userSharedPreferenceDataSource = userSharedPreferenceDataSource,
+            internetConnectionService = internetConnectionService
         )
     }
 

@@ -12,6 +12,7 @@ interface NoteRemoteDataSource {
     suspend fun updateNote(note: NoteDto, user:User):Resource<String>
     suspend fun deleteNote(note: NoteDto, user: User):Resource<String>
     suspend fun findNote(note:NoteDto, user: User):Resource<String>
+    suspend fun observeNotes(user: User):Resource<List<NoteDto>>
 
     companion object{
         const val BASE_URL = Constants.SNI_NOTES_URL

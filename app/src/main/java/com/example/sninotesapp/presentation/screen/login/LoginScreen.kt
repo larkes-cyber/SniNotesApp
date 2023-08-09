@@ -45,7 +45,7 @@ fun LoginScreen(
 
     LaunchedEffect(uiState.hasBeenDone){
         if(uiState.hasBeenDone){
-            navController.navigate(Screen.NotesScreen.route)
+            navController.navigate(Screen.SplashScreen.route)
         }
     }
 

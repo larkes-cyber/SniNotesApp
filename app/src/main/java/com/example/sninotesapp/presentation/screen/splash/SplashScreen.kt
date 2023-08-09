@@ -1,12 +1,21 @@
 package com.example.sninotesapp.presentation.screen.splash
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.sninotesapp.presentation.navigation.Screen
+import com.example.sninotesapp.presentation.theme.AppTheme
+import com.example.sninotesapp.until.Constants.SPLASH_SCREEN_TEXT
 
 @Composable
 fun SplashScreen(
@@ -16,9 +25,23 @@ fun SplashScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(uiState){
-        if(uiState != null) navController.navigate(uiState!!)
+    LaunchedEffect(uiState.status){
+        if(uiState.status != null) navController.navigate(uiState.status!!)
     }
-    Text(text = "splash")
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = SPLASH_SCREEN_TEXT,
+                style = MaterialTheme.typography.h5.copy(color = AppTheme.colors.primaryTitleColor)
+            )
+            CircularProgressIndicator()
+        }
+    }
+
+
 
 }

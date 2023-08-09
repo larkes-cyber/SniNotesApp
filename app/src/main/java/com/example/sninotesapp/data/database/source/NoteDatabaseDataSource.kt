@@ -8,4 +8,5 @@ interface NoteDatabaseDataSource {
     suspend fun observeNotes():List<NoteEntity>
     suspend fun observeNoteById(id:String):NoteEntity
     suspend fun deleteNote(noteEntity: NoteEntity)
+    suspend fun nukeNotes()
 }

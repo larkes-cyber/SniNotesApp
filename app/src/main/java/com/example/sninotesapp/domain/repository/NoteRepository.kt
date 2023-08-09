@@ -12,5 +12,6 @@ interface NoteRepository {
     suspend fun pushNote(note: Note):Resource<String>
     suspend fun updateNote(note:Note):Resource<String>
     suspend fun noteSyncWithServer(note: Note):Resource<String>
+    suspend fun notesSynchronization(): Resource<String>
 
 }
