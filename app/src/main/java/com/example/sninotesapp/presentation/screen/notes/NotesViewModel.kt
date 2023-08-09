@@ -23,6 +23,9 @@ class NotesViewModel @Inject constructor(
     private val _userUiState = MutableStateFlow(UserUiState())
     val userUiState:StateFlow<UserUiState> = _userUiState
 
+    private val _refreshingUiState = MutableStateFlow(false)
+    val refreshingUiState:StateFlow<Boolean> = _refreshingUiState
+
 
     init {
         observeNotes()
@@ -63,6 +66,17 @@ class NotesViewModel @Inject constructor(
             }
             _notesUiState.value = NotesUiState()
             observeNotes()
+        }
+    }
+
+    fun refreshData(){
+        viewModelScope.launch {
+            _refreshingUiState.value = true
+            val res = noteRepository.notesSynchronization()
+            if(res.data != null){
+                observeNotes()
+            }
+            _refreshingUiState.value = false
         }
     }
 

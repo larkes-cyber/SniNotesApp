@@ -41,6 +41,9 @@ import com.example.sninotesapp.presentation.theme.AppTheme
 import com.example.sninotesapp.presentation.views.TaskItemView
 import com.example.sninotesapp.presentation.views.NotesPrimaryButton
 import com.example.sninotesapp.until.Constants.AppName
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,9 +54,12 @@ fun NotesScreen(
 
     val notesUiState by viewModel.notesUiState.collectAsState()
     val userUiState by viewModel.userUiState.collectAsState()
+    val refreshingUiState by viewModel.refreshingUiState.collectAsState()
 
     val scaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+
+
 
     LaunchedEffect(userUiState.hasBeenQuit){
         if(userUiState.hasBeenQuit){
@@ -62,6 +68,7 @@ fun NotesScreen(
     }
 
     Scaffold(
+
         modifier = Modifier.fillMaxWidth(),
         backgroundColor = AppTheme.colors.primaryBackground,
         scaffoldState = scaffoldState,
@@ -173,34 +180,37 @@ fun NotesScreen(
             }
         }
     ) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 18.dp)
-        ){
-            item {
-                Spacer(modifier = Modifier.height(45.dp))
-            }
-            items(notesUiState.notesList.filter { it.visible }, {it.id!!}){ note ->
-                TaskItemView(
-                    title = note.title,
-                    text = note.text,
-                    color = Color(note.color),
-                    selected = note in notesUiState.selectedNotes,
-                    online_sync = note.online_sync,
-                    onLongClick = {
-                        if(!notesUiState.selectingMode){
-                            viewModel.switchSelectingMode(true)
-                            viewModel.selectNote(note)
-                        }
-                    }
-                ){
-                    if(notesUiState.selectingMode) {
-                        if(note !in notesUiState.selectedNotes) viewModel.selectNote(note)
-                        else viewModel.unselectNote(note)
-                    }
-                    else navController.navigate(Screen.NoteDetailScreen.withArgs(note.id.toString()))
+        SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = refreshingUiState), onRefresh = { viewModel.refreshData() }) {
+            LazyColumn(modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .padding(horizontal = 18.dp)
+            ){
+                item {
+                    Spacer(modifier = Modifier.height(45.dp))
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                items(notesUiState.notesList.filter { it.visible }, {it.id!!}){ note ->
+                    TaskItemView(
+                        title = note.title,
+                        text = note.text,
+                        color = Color(note.color),
+                        selected = note in notesUiState.selectedNotes,
+                        online_sync = note.online_sync,
+                        onLongClick = {
+                            if(!notesUiState.selectingMode){
+                                viewModel.switchSelectingMode(true)
+                                viewModel.selectNote(note)
+                            }
+                        }
+                    ){
+                        if(notesUiState.selectingMode) {
+                            if(note !in notesUiState.selectedNotes) viewModel.selectNote(note)
+                            else viewModel.unselectNote(note)
+                        }
+                        else navController.navigate(Screen.NoteDetailScreen.withArgs(note.id.toString()))
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
         }
     }
