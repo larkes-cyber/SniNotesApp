@@ -10,14 +10,16 @@ fun Note.toNoteEntity():NoteEntity{
         text = text,
         color = color,
         online_sync = online_sync,
-        visible = visible
+        visible = visible,
+        timestamp = timestamp
     ) else{
         NoteEntity(
             title = title,
             text = text,
             color = color,
             online_sync = online_sync,
-            visible = visible
+            visible = visible,
+            timestamp = timestamp
         )
     }
 }
@@ -29,6 +31,7 @@ fun NoteEntity.toNote(): Note {
         text = text,
         color = color,
         online_sync = online_sync,
-        visible = visible
+        visible = visible,
+        timestamp = timestamp
     )
 }

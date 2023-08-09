@@ -53,7 +53,6 @@ class NoteRepositoryImpl(
 
     override suspend fun noteSyncWithServer(note: Note):Resource<String> {
         if(internetConnectionService.isOnline()) {
-            Log.d("dfsdfsdfsdfsdf","#########################")
             try {
                 val findNoteRes = noteRemoteDataSource.findNote(
                     note = note.toNoteDto(),

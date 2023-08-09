@@ -1,6 +1,7 @@
 package com.example.sninotesapp.domain.model
 
 import androidx.compose.ui.graphics.Color
+import com.example.sninotesapp.until.TimeService
 
 data class Note(
     var id:String? = null,
@@ -8,7 +9,8 @@ data class Note(
     val text:String,
     val color:Long,
     var online_sync:Boolean,
-    var visible:Boolean = true
+    var visible:Boolean = true,
+    val timestamp: Long
 ){
     companion object {
         private val colors = listOf(0xFFD0BCFF, 0xFFCCC2DC, 0xFFEFB8C8, 0xFFF2B8B5, 0xFFCAC5CD)

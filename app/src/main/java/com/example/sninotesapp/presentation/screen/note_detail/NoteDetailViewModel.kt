@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sninotesapp.domain.model.Note
 import com.example.sninotesapp.domain.repository.NoteRepository
 import com.example.sninotesapp.presentation.screen.login.LoginUiState
+import com.example.sninotesapp.until.TimeService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,7 +30,8 @@ class NoteDetailViewModel @Inject constructor(
                     title = note.title,
                     text = note.text,
                     color = note.color,
-                    online_sync = note.online_sync
+                    online_sync = note.online_sync,
+                    timestamp = note.timestamp
                 )
             }else{
                 _uiState.value = NoteDetailUiState(
@@ -58,7 +60,8 @@ class NoteDetailViewModel @Inject constructor(
                 title = _uiState.value.title,
                 text = _uiState.value.text,
                 color = _uiState.value.color,
-                online_sync = false
+                online_sync = false,
+                timestamp = if(_uiState.value.timestamp == null) TimeService.getCurrentTimeInMilliseconds() else _uiState.value.timestamp!!
             )
 
             val serverSyncRes = noteRepository.noteSyncWithServer(note)
