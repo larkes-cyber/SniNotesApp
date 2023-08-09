@@ -1,6 +1,7 @@
 # SniNotesApp
 SniNotesApp is a google keep notes clone. You can write note and it will be saved on your device and then synchronized with the server. 
 You can easily check the synchronization by pulling refresh icon.
+
 Tech:
 - Kotlin
 - Jetpack Compose
