@@ -14,6 +14,7 @@ Tech:
 Steps:
 - Clone the project
 - In Constants.kt write your local ip in SNI_NOTES_URL
+- Download MongoDB
 - Launch the server: https://github.com/larkes-cyber/SniNotesBackend
 - Launch the app
 - Enjoy using!
